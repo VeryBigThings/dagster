@@ -10,7 +10,12 @@ RUN python -m uv pip install \
     dagster-k8s \
     dagster-celery[flower,redis,kubernetes] \
     dagster-celery-k8s \
-    dagstermill
+    dagstermill \
+    papermill  \
+    matplotlib \
+    seaborn \
+    scikit-learn \
+    pandas
 
 # Get example pipelines
 COPY ./ /

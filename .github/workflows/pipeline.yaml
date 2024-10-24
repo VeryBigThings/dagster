@@ -1,0 +1,64 @@
+name: Build and deploy
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  packages: write
+  contents: write
+
+jobs:
+  build-image:
+    name: Build and push docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: 'Build image'
+        run: |
+          REPOSITORY_OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          REPOSITORY_NAME="${{ github.event.repository.name }}"
+          docker build . --tag ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
+          docker push ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
+
+  update-k8s-pod:
+    name: Update k8s pods with latest image
+    if: false
+    needs: [build-image]
+    runs-on:
+      ubuntu-latest
+    timeout-minutes: 10
+    environment: dev
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Install Ansible
+        shell: bash
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+      
+      - name: Run Ansible Playbook
+        env:
+          GITHUB_CLIENT_ID: ${{ secrets.ANSIBLE_USER }}
+          GITHUB_CLIENT_SECRET: False
+          SPACES_ACCESS_KEY_ID: False
+          SPACES_SECRET_ACCESS_KEY: False
+        run: |
+          ansible-playbook main.yaml --extra-vars "env_name=dev kubeconfig_path=../env/dev/kubeconfig kube_context=do-nyc3-st-paper-dev" -t deploy-dagster-user-code
+

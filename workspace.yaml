@@ -1,4 +1,4 @@
 load_from:
-  - python_file:
-      relative_path: tutorial_finished/definitions.py
-      location_name: tutorial_finished
+  - python_package:
+      package_name: tutorial_template.definitions
+      location_name: tutorial_template
