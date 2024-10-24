@@ -1,4 +1,4 @@
-name: Build and deploy
+name: Build docker image
 
 on:
   push:
@@ -35,30 +35,9 @@ jobs:
           REPOSITORY_NAME="${{ github.event.repository.name }}"
           docker build . --tag ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
           docker push ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
-
-  update-k8s-pod:
-    name: Update k8s pods with latest image
-    if: false
-    needs: [build-image]
-    runs-on:
-      ubuntu-latest
-    timeout-minutes: 10
-    environment: dev
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Install Ansible
-        shell: bash
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-      
-      - name: Run Ansible Playbook
-        env:
-          GITHUB_CLIENT_ID: ${{ secrets.ANSIBLE_USER }}
-          GITHUB_CLIENT_SECRET: False
-          SPACES_ACCESS_KEY_ID: False
-          SPACES_SECRET_ACCESS_KEY: False
-        run: |
-          ansible-playbook main.yaml --extra-vars "env_name=dev kubeconfig_path=../env/dev/kubeconfig kube_context=do-nyc3-st-paper-dev" -t deploy-dagster-user-code
-
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PAT }}
+          repository: VeryBigThings/ml-infra
+          event-type: update-user-code
