@@ -36,6 +36,19 @@ def iris_dataset_two():
         ],
     )
 
+@asset(group_name="template_tutorial")
+def iris_dataset_three():
+    return pd.read_csv(
+        "https://docs.dagster.io/assets/iris.csv",
+        names=[
+            "Sepal length (cm)",
+            "Sepal width (cm)",
+            "Petal length (cm)",
+            "Petal width (cm)",
+            "Species",
+        ],
+    )
+
 
 # TODO 1: Uncomment the code below to create a Dagster asset backed by a Jupyter notebook
 # relevant documentation - https://docs.dagster.io/_apidocs/libraries/dagstermill#dagstermill.define_dagstermill_asset
