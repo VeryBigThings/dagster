@@ -33,11 +33,13 @@ jobs:
         run: |
           REPOSITORY_OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
           REPOSITORY_NAME="${{ github.event.repository.name }}"
-          docker build . --tag ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
-          docker push ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:latest
+          TAG="${{ github.sha }}"
+          docker build . --tag ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:$TAG
+          docker push ghcr.io/$REPOSITORY_OWNER/$REPOSITORY_NAME:$TAG
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.PAT }}
           repository: VeryBigThings/ml-infra
           event-type: update-user-code
+          client-payload: '{"tag": "${{ github.sha }}"}'
