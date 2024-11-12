@@ -4,7 +4,7 @@ from dagstermill import ConfigurableLocalOutputNotebookIOManager
 
 from . import assets
 
-s3_bucket = "st-paper-dev"
+s3_bucket = "st-paper-dev-storage"
 
 defs = Definitions(
     assets=load_assets_from_modules([assets]),
