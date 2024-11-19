@@ -15,7 +15,9 @@ RUN python -m uv pip install \
     matplotlib \
     seaborn \
     scikit-learn \
-    pandas
+    pandas \
+    pyodbc \
+    psycopg2
 
 # Get example pipelines
 COPY ./ /
