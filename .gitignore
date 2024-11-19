@@ -1,3 +1,5 @@
 _pycache__/
 *.py[cod]
 *$py.class
+.envrc
+dagster_home

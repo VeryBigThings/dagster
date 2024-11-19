@@ -1,6 +1,7 @@
 from dagster import Definitions, load_assets_from_modules
 from dagster_aws.s3 import S3PickleIOManager, S3Resource
 from dagstermill import ConfigurableLocalOutputNotebookIOManager
+from tutorial_template.resources.parquet_io_manager import S3PartitionedParquetIOManager
 
 from . import assets
 
@@ -13,6 +14,7 @@ defs = Definitions(
             s3_bucket=s3_bucket,
             s3_resource=S3Resource(),
         ),
+        "parquet_io_manager": S3PartitionedParquetIOManager(s3_bucket=s3_bucket),
         "output_notebook_io_manager": ConfigurableLocalOutputNotebookIOManager(),
     },
 )

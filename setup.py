@@ -11,6 +11,8 @@ setup(
         "matplotlib",
         "seaborn",
         "scikit-learn",
+        "pyodbc",
+        "psycopg2",
     ],
     extras_require={"dev": ["dagster-webserver", "pytest"]},
 )
