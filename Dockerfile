@@ -1,5 +1,7 @@
 FROM python:3.10-slim
 
+RUN cat /etc/os-release
+
 RUN apt-get update
 RUN apt-get -y install curl lsb-release libpq-dev gcc unixodbc
 
