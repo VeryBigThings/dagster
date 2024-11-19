@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get -y install libpq-dev gcc
+RUN apt-get update && apt-get -y install libpq-dev gcc libodbc2
 
 # All packages are hard-pinned to `dagster`, so setting the version on just `DAGSTER` will ensure
 # compatible versions.
