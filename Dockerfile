@@ -1,15 +1,12 @@
 FROM python:3.10-slim
 
 RUN apt-get update
-RUN apt-get -y install curl libpq-dev gcc unixodbc
+RUN apt-get -y install curl tee libpq-dev gcc unixodbc
 
-# DEPENDECES FOR DOWNLOAD ODBC DRIVER
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-RUN curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
+RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
 RUN apt-get update
-
-# INSTALL ODBC DRIVER
-RUN ACCEPT_EULA=Y apt-get install msodbcsql17 --assume-yes
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
 
 # All packages are hard-pinned to `dagster`, so setting the version on just `DAGSTER` will ensure
 # compatible versions.
