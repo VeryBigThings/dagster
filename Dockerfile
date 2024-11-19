@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
 RUN apt-get update
-RUN apt-get -y install curl libpq-dev gcc unixodbc
+RUN apt-get -y install curl lsb-release libpq-dev gcc unixodbc
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
 RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
