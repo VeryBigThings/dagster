@@ -11,15 +11,15 @@ from ..config import config
     group_name="gold",
     description="Store customers into warehouse",
     ins={
-        "customers": AssetIn(
-            "customers",
+        "unique_customers": AssetIn(
+            "unique_customers",
             input_manager_key="parquet_io_manager",
             metadata={"path": os.path.join(config["silver_path_prefix"], "customers")},
         ),
     },
 )
-def customer_to_warehouse(customers: pd.DataFrame):
-    customer_df = customers[["Customer"]]
+def customer_to_warehouse(unique_customers: pd.DataFrame):
+    customer_df = unique_customers[["Customer"]]
     customer_df.set_index("Customer", inplace=True)
     return customer_df.to_sql(
         "dimCustomer",

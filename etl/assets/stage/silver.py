@@ -22,7 +22,7 @@ from ..common import get_ingestion_assets, config
         asset_direction_class=AssetIn,
     ),
 )
-def customers(
+def unique_customers(
     production_tblPurchaseOrder: pd.DataFrame,
     production_tlkpCustomer: pd.DataFrame,
     production_tblBillofLadingHeader: pd.DataFrame,
