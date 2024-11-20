@@ -1,4 +1,4 @@
 load_from:
   - python_package:
-      package_name: tutorial_template.definitions
-      location_name: tutorial_template
+      package_name: etl.definitions
+      location_name: etl

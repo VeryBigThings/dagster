@@ -1,7 +1,7 @@
 from dagster import Definitions, load_assets_from_modules
 from dagster_aws.s3 import S3PickleIOManager, S3Resource
 from dagstermill import ConfigurableLocalOutputNotebookIOManager
-from tutorial_template.resources.parquet_io_manager import S3PartitionedParquetIOManager
+from etl.resources.parquet_io_manager import S3PartitionedParquetIOManager
 
 from . import assets
 

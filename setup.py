@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="tutorial_notebook_assets",
-    packages=find_packages(exclude=["tutorial_notebook_assets"]),
+    name="etl_assets",
+    packages=find_packages(exclude=["etl_assets"]),
     install_requires=[
         "dagster",
         "dagstermill",
