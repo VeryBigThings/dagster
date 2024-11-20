@@ -18,6 +18,11 @@ config = {
             "tables": ["tblPulperMix"],
             "storage_path_prefix": "bronze/db/tracker",
         },
+        "ctc_custom": {
+            "db_uri": os.environ["DB_CTC_CUSTOM_URI"],
+            "tables": ["ctc_Chem_Data"],
+            "storage_path_prefix": "bronze/db/ctc_custom",
+        },
     },
     "silver_path_prefix": "silver",
     "warehouse_uri": os.environ["DB_WAREHOUSE_URI"],

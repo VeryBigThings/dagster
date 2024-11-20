@@ -13,6 +13,7 @@ setup(
         "scikit-learn",
         "pyodbc",
         "psycopg2",
+        "pymssql",
     ],
     extras_require={"dev": ["dagster-webserver", "pytest"]},
 )

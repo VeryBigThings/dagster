@@ -26,7 +26,8 @@ RUN python -m uv pip install \
     scikit-learn \
     pandas \
     pyodbc \
-    psycopg2
+    psycopg2 \
+    pymssql
 
 # Get example pipelines
 COPY ./ /
