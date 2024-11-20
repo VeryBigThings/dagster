@@ -27,6 +27,12 @@ def customers(
     production_tlkpCustomer: pd.DataFrame,
     production_tblBillofLadingHeader: pd.DataFrame,
 ):
-    m1 = pd.merge(production_tblPurchaseOrder, production_tlkpCustomer, on="Customer")
-    m2 = pd.merge(m1, production_tblBillofLadingHeader, on="Customer")
-    return m2[["Customer"]].drop_duplicates()
+    customers = pd.concat(
+        [
+            production_tblPurchaseOrder["Customer"],
+            production_tlkpCustomer["Customer"],
+            production_tblBillofLadingHeader["Customer"],
+        ]
+    ).str.strip().str.upper()
+
+    return customers.drop_duplicates().to_frame(name="Customer")
