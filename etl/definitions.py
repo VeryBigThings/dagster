@@ -1,3 +1,4 @@
+import os
 from dagster import Definitions, load_assets_from_modules
 from dagster_aws.s3 import S3PickleIOManager, S3Resource
 from dagstermill import ConfigurableLocalOutputNotebookIOManager
@@ -5,7 +6,7 @@ from etl.resources.parquet_io_manager import S3PartitionedParquetIOManager
 
 from . import assets
 
-s3_bucket = "st-paper-dev-storage"
+s3_bucket = os.environ["AWS_BUCKET_S3"]
 
 defs = Definitions(
     assets=load_assets_from_modules([assets]),
