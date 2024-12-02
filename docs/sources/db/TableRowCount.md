@@ -284,29 +284,6 @@
 |vacations|0|
 |tbldispatch_temp_LA|0
 
-# DB: ctc_custom
-|TableName|RowCounts|
-|---------|---------|
-|FMS_Date|10957|
-|cus_CONV_Date|10957|
-|ctc_Chem_Data|4311|
-|ctc_Chem_MTD_Data|481|
-|ctc_Chem_Venders|96|
-|cus_tagMapping|93|
-|cus_WrapProd_tags|72|
-|cus_RewindProd_tags|60|
-|cus_FRP_TagTableMap|50|
-|cus_MachProd_tags|42|
-|cus_FRP_Summary|10|
-|cus_FRP_Aline_Tracker|7|
-|cus_FRP_Bline_Tracker|7|
-|cus_FRP_Aline|7|
-|cus_FRP_Bline|6|
-|cus_PM5_6_ProductionReport|4|
-|cus_FRP_WIT|3|
-|cus_RW5_6_ProductionReport|2|
-|ctc_Chem_Totals|0|
-
 # DB: ReportServer
 |TableName|RowCounts|
 |---------|---------|
@@ -344,6 +321,29 @@
 |RunningJobs|0|
 |ServerParametersInstance|0|
 |SubscriptionsBeingDeleted|0
+
+# DB: ctc_custom
+|TableName|RowCounts|
+|---------|---------|
+|FMS_Date|10957|
+|cus_CONV_Date|10957|
+|ctc_Chem_Data|4311|
+|ctc_Chem_MTD_Data|481|
+|ctc_Chem_Venders|96|
+|cus_tagMapping|93|
+|cus_WrapProd_tags|72|
+|cus_RewindProd_tags|60|
+|cus_FRP_TagTableMap|50|
+|cus_MachProd_tags|42|
+|cus_FRP_Summary|10|
+|cus_FRP_Aline_Tracker|7|
+|cus_FRP_Bline_Tracker|7|
+|cus_FRP_Aline|7|
+|cus_FRP_Bline|6|
+|cus_PM5_6_ProductionReport|4|
+|cus_FRP_WIT|3|
+|cus_RW5_6_ProductionReport|2|
+|ctc_Chem_Totals|0|
 
 # DB: ctc_config
 |TableName|RowCounts|
