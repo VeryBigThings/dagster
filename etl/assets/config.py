@@ -34,7 +34,7 @@ config = {
             "storage_path_prefix": "bronze/db/ctc_custom",
         },
         "ctc_config": {
-            "db_uri": os.environ["DB_CTC_CUSTOM_URI"],
+            "db_uri": os.environ["DB_CTC_CONFIG_URI"],
             "tables": [],
             "storage_path_prefix": "bronze/db/ctc_config",
         },
