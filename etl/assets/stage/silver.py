@@ -14,24 +14,24 @@ from ..common import get_ingestion_assets, config
     description="Collect unique customers",
     ins=get_ingestion_assets(
         asset_keys=[
-            # "production_tblPurchaseOrder",
+            "production_tblPurchaseOrder",
             "production_tlkpCustomer",
-            # "production_tblBillofLadingHeader",
+            "production_tblBillofLadingHeader",
         ],
         per_asset_params=["key", "metadata"],
         asset_direction_class=AssetIn,
     ),
 )
 def unique_customers(
-    # production_tblPurchaseOrder: pd.DataFrame,
+    production_tblPurchaseOrder: pd.DataFrame,
     production_tlkpCustomer: pd.DataFrame,
-    # production_tblBillofLadingHeader: pd.DataFrame,
+    production_tblBillofLadingHeader: pd.DataFrame,
 ):
     customers = pd.concat(
         [
-            # production_tblPurchaseOrder["Customer"],
+            production_tblPurchaseOrder["Customer"],
             production_tlkpCustomer["Customer"],
-            # production_tblBillofLadingHeader["Customer"],
+            production_tblBillofLadingHeader["Customer"],
         ]
     ).str.strip().str.upper()
 

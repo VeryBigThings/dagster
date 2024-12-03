@@ -5,10 +5,10 @@ config = {
         "production": {
             "db_uri": os.environ["DB_PRODUCTION_URI"],
             "tables": [
-                # "tblBillofLadingDetail",
-                # "tblBillofLadingHeader",
-                # "tblPurchaseOrder",
-                # "tblPurchaseOrderDetail",
+                "tblBillofLadingDetail",
+                "tblBillofLadingHeader",
+                "tblPurchaseOrder",
+                "tblPurchaseOrderDetail",
                 "tlkpCustomer",
             ],
             "storage_path_prefix": "bronze/db/production",
