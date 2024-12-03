@@ -5,17 +5,19 @@ config = {
         "production": {
             "db_uri": os.environ["DB_PRODUCTION_URI"],
             "tables": [
-                "tblBillofLadingDetail",
-                "tblBillofLadingHeader",
-                "tblPurchaseOrder",
-                "tblPurchaseOrderDetail",
+                # "tblBillofLadingDetail",
+                # "tblBillofLadingHeader",
+                # "tblPurchaseOrder",
+                # "tblPurchaseOrderDetail",
                 "tlkpCustomer",
             ],
             "storage_path_prefix": "bronze/db/production",
         },
         "tracker": {
             "db_uri": os.environ["DB_TRACKER_URI"],
-            "tables": ["tblPulperMix"],
+            "tables": [
+            #   "tblPulperMix"
+            ],
             "storage_path_prefix": "bronze/db/tracker",
         },
         "OBCC": {
