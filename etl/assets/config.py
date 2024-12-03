@@ -16,23 +16,29 @@ config = {
         "tracker": {
             "db_uri": os.environ["DB_TRACKER_URI"],
             "tables": [
-            #   "tblPulperMix"
+              "tblPulperMix"
             ],
             "storage_path_prefix": "bronze/db/tracker",
         },
         "OBCC": {
             "db_uri": os.environ["DB_OBCC_URI"],
-            "tables": [],
+            "tables": [
+              "winderDown"
+            ],
             "storage_path_prefix": "bronze/db/OBCC",
         },
         "STTissueProductionQRT": {
             "db_uri": os.environ["DB_STTISSUEPRODUCTIONQRT_URI"],
-            "tables": [],
+            "tables": [
+              "masterData"
+            ],
             "storage_path_prefix": "bronze/db/STTissueProductionQRT",
         },
         "ctc_custom": {
             "db_uri": os.environ["DB_CTC_CUSTOM_URI"],
-            "tables": [],
+            "tables": [
+              "ctc_Chem_Data"
+            ],
             "storage_path_prefix": "bronze/db/ctc_custom",
         },
         "ctc_config": {
