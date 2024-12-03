@@ -5,7 +5,7 @@ config = {
         "production": {
             "db_uri": os.environ["DB_PRODUCTION_URI"],
             "tables": [
-                # "tblBillofLadingDetail",
+                "tblBillofLadingDetail",
                 "tblBillofLadingHeader",
                 "tblPurchaseOrder",
                 "tblPurchaseOrderDetail",
