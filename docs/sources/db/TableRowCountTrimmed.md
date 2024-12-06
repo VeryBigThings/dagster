@@ -18,22 +18,13 @@
 |tblPurchaseOrderDetail|8394|
 |tblWrapperLookup|6023|
 |tblPurchaseOrder|5538|
-|tblInventoryScansTEMP|5351|
-|tblInventoryLastMoveTEMP|5241|
-|tblConvertingParent|5119|
 |tblParentInventory|4410|
 |tblCaseInventory|2662|
 |tblPOPromiseDate|1729|
 |tblPOPromiseProduction|1444|
-|tblConvertingCases|1261|
-|tblBillofLadingDetailConv|1180|
-|tblPurchaseOrderDetailConv|1163|
 |tlkpGradeCodeTBD|901|
 |tlkpTeamShifts|891|
 |tlkpGradeCode|849|
-|tblPurchaseOrderConv|797|
-|tblBillofLadingHeaderConv|744|
-|tlkpCustomerConvItems|612|
 |tlkpLocation|212|
 |tlkpCustomer|153|
 |tlkpGradeCodeDetail|95|
@@ -41,9 +32,6 @@
 |tlkpCartonProducts|94|
 |tblRewinderLookup|87|
 |tlkpRedCode|68|
-|tlkpCustomerConvReceiver|49|
-|tlkpCustomerConv|30|
-|tblBillofLadingPalletsConv|11|
 |tlkpGradeCodeParent|10|
 |tlkpPOStatus|9|
 |tlkpFurnishCode|6|
@@ -53,13 +41,9 @@
 |tlkpMachine|2|
 |tlkpPayment|2|
 |tlkpRewinder|2|
-|tblMachineProductionTEMP|2|
 |tlkpShift|2|
 |tlkpStatus|2|
 |tlkpWrapper|2|
-|tblWrapperConverting|2|
-|tblWrapperProductionTEMP|1|
-|tblRewinderProductionTEMP|1|
 |tlkpUpdateDateTime|1|
 |tblPOPromiseDateAudit|1|
 |tlkpScanLocation|1|
@@ -106,12 +90,8 @@
 |tlkpCustomer|2|
 |tlkpLabelWeight|1|
 |tlkpCarrierWL|1|
-|tblPrintLabelsTemp|0|
-|tblPulperUsageTemp|0|
 |tblPulperUsageErrors|0|
-|tblPulperUsageBayTemp|0|
 |tblPulperUsage|0|
-|tblBayTransferTEMP|0|
 |tlkpDailyFuelRates|0
 
 # DB: OBCC
