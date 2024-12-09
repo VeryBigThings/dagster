@@ -141,3 +141,60 @@ def fact_inv_not_shipped(production_tblWrapperProduction: pd.DataFrame):
         if_exists="replace",
         index=False,
     )
+
+# asset fact_po_production, ins po_bol_joined
+@asset(
+    group_name="gold_fact",
+    description="Facts about PO production",
+    ins={
+        "po_bol_joined": AssetIn(
+            "po_bol_joined",
+            input_manager_key="parquet_io_manager",
+            metadata={
+                "path": os.path.join(config["silver_path_prefix"], "po_bol_joined")
+            },
+        )
+    },
+)
+def fact_po_production(po_bol_joined: pd.DataFrame):
+    po_production = po_bol_joined
+
+    po_production = po_production.groupby(
+        [
+            "PO_Customer",
+            "POD_CustomerCode",
+            "POD_TonQty",
+            "PO_PONumber",
+            "PO_PODate",
+            "BOLH_ShippingNumber",
+            "BOLH_LoadDate",
+            "BOLH_ShippingDate",
+        ]
+    ).agg(
+        LoadPounds=("BOLD_RollWeight", "sum"),
+        LoadPieces=("BOLD_Pieces", "sum"),
+    )
+
+    po_production["LoadTons"] = po_production["LoadPounds"] / 2000
+    po_production = po_production.reset_index()
+    po_production = po_production.drop(columns=["LoadPounds"])
+
+    po_production = po_production.rename(
+        columns={
+            "PO_Customer": "Customer",
+            "POD_CustomerCode": "CustomerCode",
+            "PO_PONumber": "PONumber",
+            "PO_PODate": "PODate",
+            "POD_TonQty": "TotalTons",
+            "BOLH_ShippingNumber": "ShippingNumber",
+            "BOLH_LoadDate": "LoadDate",
+            "BOLH_ShippingDate": "ShippingDate",
+        }
+    )
+
+    return po_production.to_sql(
+        "factPOProduction",
+        config["warehouse_uri"],
+        if_exists="replace",
+        index=False,
+    )

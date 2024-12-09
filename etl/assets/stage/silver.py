@@ -98,6 +98,6 @@ def po_bol_joined(
 
     PO_join = pd.merge(tblPurchaseOrder, tblPurchaseOrderDetail, left_on="PO_PONumber", right_on="POD_PONumber", how="inner")
     BOL_join = pd.merge(tblBillofLadingDetail, tblBillofLadingHeader, left_on=["BOLD_ShippingNumber", "BOLD_PONumber"], right_on=["BOLH_ShippingNumber", "BOLH_PONumber"], how="inner")
-    PO_BOL_join = pd.merge(PO_join, BOL_join, left_on=["POD_PONumber", "POD_CustomerCode"], right_on=["BOLD_PONumber", "BOLD_CustCode"], how="inner")
+    PO_BOL_join = pd.merge(PO_join, BOL_join, left_on=["POD_PONumber", "POD_CustomerCode"], right_on=["BOLD_PONumber", "BOLD_CustCode"], how="outer")
 
     return PO_BOL_join
