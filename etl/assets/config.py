@@ -10,7 +10,6 @@ config = {
                 "tblPurchaseOrder",
                 "tblPurchaseOrderDetail",
                 "tlkpCustomer",
-                "tblInventoryInquiry",
                 "tblWrapperProduction",
             ],
             "storage_path_prefix": "bronze/db/production",

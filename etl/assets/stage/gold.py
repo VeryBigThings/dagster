@@ -4,6 +4,8 @@ from dagster import (
     AssetIn,
     asset,
 )
+
+from etl.assets.common import get_ingestion_assets
 from ..config import config
 
 
@@ -30,7 +32,7 @@ def dim_customers(unique_customers: pd.DataFrame):
         index_label="Customer",
     )
 
-# asset dim_customer_grade_codes
+
 @asset(
     group_name="gold_dim",
     description="Store customer grade codes into warehouse",
@@ -39,13 +41,17 @@ def dim_customers(unique_customers: pd.DataFrame):
             "unique_customer_grade_code",
             input_manager_key="parquet_io_manager",
             metadata={
-                "path": os.path.join(config["silver_path_prefix"], "customer_grade_code")
+                "path": os.path.join(
+                    config["silver_path_prefix"], "customer_grade_code"
+                )
             },
         ),
     },
 )
 def dim_customer_grade_codes(unique_customer_grade_code: pd.DataFrame):
-    customer_grade_code_df = unique_customer_grade_code[["Customer", "GradeCode", "CustomerGradeCode"]]
+    customer_grade_code_df = unique_customer_grade_code[
+        ["Customer", "GradeCode", "CustomerGradeCode"]
+    ]
     customer_grade_code_df.set_index(["Customer", "GradeCode"], inplace=True)
 
     return customer_grade_code_df.to_sql(
@@ -59,40 +65,48 @@ def dim_customer_grade_codes(unique_customer_grade_code: pd.DataFrame):
 
 @asset(
     group_name="gold_fact",
-    description="Collect scheduled loads facts",
+    description="Facts about scheduled loads",
     ins={
-        "bol_po_joined": AssetIn(
-            "bol_po_joined",
+        "po_bol_joined": AssetIn(
+            "po_bol_joined",
             input_manager_key="parquet_io_manager",
             metadata={
-                "path": os.path.join(config["silver_path_prefix"], "bol_po_joined")
+                "path": os.path.join(config["silver_path_prefix"], "po_bol_joined")
             },
-        ),
+        )
     },
 )
-def fact_scheduled_loads(bol_po_joined: pd.DataFrame):
-    scheduled_loads = bol_po_joined[
-        (bol_po_joined["LoadDate"].notnull()) & (bol_po_joined["ShippingDate"].isnull())
+def fact_scheduled_loads(po_bol_joined: pd.DataFrame):
+    scheduled_loads = po_bol_joined[
+        (po_bol_joined["BOLH_LoadDate"].notnull()) & (po_bol_joined["BOLH_ShippingDate"].isnull())
     ]
-    scheduled_loads["LoadWeight"] = (
-        scheduled_loads["RollWeight"] * scheduled_loads["Pieces"]
-    )
+
     scheduled_loads = scheduled_loads.groupby(
         [
-            "Customer",
-            "CustomerCode",
-            "PONumber",
-            "PODate",
-            "ShippingNumber",
-            "Status",
-            "TotalWeight",
-            "RollID",
-            "RollNumber",
-            "RollSize",
-            "GradeCode",
+            "PO_Customer",
+            "POD_CustomerCode",
+            "PO_PONumber",
+            "PO_PODate",
+            "BOLH_ShippingNumber",
         ]
-    )["LoadWeight"].sum()
+    ).agg(
+        LoadPounds=("BOLD_RollWeight", "sum"),
+        LoadPieces=("BOLD_Pieces", "sum"),
+    )
+
+    scheduled_loads["LoadTons"] = scheduled_loads["LoadPounds"] / 2000
     scheduled_loads = scheduled_loads.reset_index()
+    scheduled_loads = scheduled_loads.drop(columns=["LoadPounds"])
+
+    scheduled_loads = scheduled_loads.rename(
+        columns={
+            "PO_Customer": "Customer",
+            "POD_CustomerCode": "CustomerCode",
+            "PO_PONumber": "PONumber",
+            "PO_PODate": "PODate",
+            "BOLH_ShippingNumber": "ShippingNumber",
+        }
+    )
 
     return scheduled_loads.to_sql(
         "factScheduledLoads",
@@ -102,27 +116,26 @@ def fact_scheduled_loads(bol_po_joined: pd.DataFrame):
     )
 
 
-# asset fact_inv_not_shipped
 @asset(
     group_name="gold_fact",
-    description="Collect inventory not shipped facts",
-    ins={
-        "inv_bol_joined": AssetIn(
-            "inv_bol_joined",
-            input_manager_key="parquet_io_manager",
-            metadata={
-                "path": os.path.join(config["silver_path_prefix"], "inv_bol_joined")
-            },
-        ),
-    },
+    description="Facts about non-shipped (old) inventory",
+    ins=get_ingestion_assets(
+        asset_keys=[
+            "production_tblWrapperProduction",
+        ],
+        per_asset_params=["key", "metadata"],
+        asset_direction_class=AssetIn,
+    ),
 )
-def fact_inv_not_shipped(inv_bol_joined: pd.DataFrame):
-    inv_bol_joined = inv_bol_joined[
-        inv_bol_joined["ShippingNumber"].isnull() &
-        inv_bol_joined["CustomerGradeCode"].notnull()
-    ]
+def fact_inv_not_shipped(production_tblWrapperProduction: pd.DataFrame):
+    tblWrapperProduction = production_tblWrapperProduction
 
-    return inv_bol_joined.to_sql(
+    inv_non_shipped = tblWrapperProduction[
+        tblWrapperProduction["DateShipped"].isnull() &
+        tblWrapperProduction["CustomerGradeCode"].notnull()
+    ].sort_values("DateEntered")
+
+    return inv_non_shipped.to_sql(
         "factInventoryNotShipped",
         config["warehouse_uri"],
         if_exists="replace",
