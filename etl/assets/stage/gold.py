@@ -5,8 +5,9 @@ from dagster import (
     asset,
 )
 
-from etl.assets.common import get_ingestion_assets
-from ..config import config
+from etl.assets.common.assets import get_ingestion_assets
+from etl.assets.config import config
+from etl.assets.common.normalization import normalize_string_column
 
 
 @asset(
@@ -166,6 +167,7 @@ def fact_po_production(po_bol_joined: pd.DataFrame):
             "POD_TonQty",
             "PO_PONumber",
             "PO_PODate",
+            "BOLD_GradeCode",
             "BOLH_ShippingNumber",
             "BOLH_LoadDate",
             "BOLH_ShippingDate",
@@ -185,12 +187,15 @@ def fact_po_production(po_bol_joined: pd.DataFrame):
             "POD_CustomerCode": "CustomerCode",
             "PO_PONumber": "PONumber",
             "PO_PODate": "PODate",
+            "BOLD_GradeCode": "GradeCode",
             "POD_TonQty": "TotalTons",
             "BOLH_ShippingNumber": "ShippingNumber",
             "BOLH_LoadDate": "LoadDate",
             "BOLH_ShippingDate": "ShippingDate",
         }
     )
+
+    po_production = normalize_string_column(po_production, "Customer")
 
     return po_production.to_sql(
         "factPOProduction",
