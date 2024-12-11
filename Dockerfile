@@ -20,6 +20,7 @@ RUN python -m uv pip install \
     dagster-celery[flower,redis,kubernetes] \
     dagster-celery-k8s \
     dagstermill \
+    dagster-webserver \
     nbconvert \
     papermill  \
     matplotlib \
