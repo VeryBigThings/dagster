@@ -14,14 +14,15 @@ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
 RUN pip install -U uv
 RUN python -m uv pip install \
     dagster==1.8.12 \
-    dagster-postgres \
-    dagster-aws \
-    dagster-k8s \
-    dagster-celery[flower,redis,kubernetes] \
-    dagster-celery-k8s \
-    dagstermill \
-    dagster-webserver[notebook] \
+    dagster-postgres==0.24.12 \
+    dagster-aws==0.24.12 \
+    dagster-k8s==0.24.12 \
+    dagster-celery[flower,redis,kubernetes]==0.24.12 \
+    dagster-celery-k8s==0.24.12 \
+    dagstermill==0.24.12 \
+    dagster-webserver[notebook]==1.8.12 \
     nbconvert \
+    notebook \
     papermill  \
     matplotlib \
     seaborn \
